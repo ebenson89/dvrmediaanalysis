@@ -1,13 +1,19 @@
 ''' Analyze movies, etc., recorded on DVRs '''
 # TODO: Update the function get_media to read a json file and return the data in python dictionary format
 # Hint: https://stackoverflow.com/questions/41476636/how-to-read-a-json-file-and-return-as-dictionary-in-python
+import json
 media_file_name = "recordings.json"
 
 def get_media(json_file_name):
-    """
-    Read json file and return it in a dictionary format
-    """
-    return "SUCCESS! Now, replace this with a dictionary version of the recordings.json file"
+    #Open json file
+    f = open(media_file_name,)
+    #Returns json obj as a dictionary
+    data = json.load(f)
+    #Close json file
+    f.close
+
+    return data
+
 
 
 def main():
