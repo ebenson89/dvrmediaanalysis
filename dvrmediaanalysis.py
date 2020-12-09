@@ -6,11 +6,9 @@ media_file_name = "recordings.json"
 
 def get_media(json_file_name):
     #Open json file
-    f = open(media_file_name,)
-    #Returns json obj as a dictionary
-    data = json.load(f)
-    #Close json file
-    f.close
+    with open(media_file_name) as f:
+        #Returns json obj as a dictionary
+        data = json.load(f)
 
     return data
 
