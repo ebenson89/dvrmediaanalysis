@@ -10,8 +10,13 @@ def get_media(json_file_name):
         return json.load(media_file)
 
 def remove_list (media_dict):
-    #TODO flatten each dictionary entry by replacing the list with the value that was in the list
-    return (media_dict)
+    #Flatten each dictionary entry by replacing the list with the value that was in the list
+    simple_dict = {}
+    #Run though raw dict
+    for movie in media_dict:
+        #Add new dict entry to simple_dict
+        simple_dict.update({movie:(media_dict[movie])[0]})
+    return (simple_dict)
 
 def main():
     """
