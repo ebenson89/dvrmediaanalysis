@@ -1,6 +1,7 @@
 ''' Analyze movies, etc., recorded on DVRs '''
 
 import json
+from datetime import datetime
 
 media_file_name = "recordings.json"
 
@@ -21,7 +22,21 @@ def remove_list (media_dict):
 
 def convert_encode_time(media_dict):
     ''' Convert all EncodeTime to a valid datetime object '''
-    assert False, "Remove this statement and update this def to convert the media_dict encode_time strings to a datetime objects" 
+    datetime_updated_dict = {}
+    #Run through dict
+    for movie in media_dict:
+        if "EncodeTime" in media_dict[movie]: #Also removes invalid entries
+            #copy the movie data dict
+            movie_data_dict = media_dict[movie]
+            #copy encode time string and update it to datetime obj and get rid of the Z
+            datetime_encodetime = datetime.strptime((movie_data_dict["EncodeTime"])[:-1],"%Y:%m:%d %H:%M:%S")
+            #put the updated time back into the copy of the movie data
+            movie_data_dict.update({"EncodeTime":datetime_encodetime})
+            #put the movie data dict into the new datetime dict
+            datetime_updated_dict.update({movie:movie_data_dict})
+
+    return datetime_updated_dict
+
 
 def main():
     """
