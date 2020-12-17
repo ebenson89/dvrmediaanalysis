@@ -22,6 +22,7 @@ def remove_list (media_dict):
 
 def convert_encode_time(media_dict):
     ''' Convert all EncodeTime to a valid datetime object '''
+    #Current london time - 6 to get chicago time
     datetime_updated_dict = {}
     #Run through dict
     for movie in media_dict:
@@ -29,10 +30,10 @@ def convert_encode_time(media_dict):
             #copy the movie data dict
             movie_data_dict = media_dict[movie]
             #copy encode time string and update it to datetime obj and get rid of the Z
-            datetime_encodetime = datetime.strptime((movie_data_dict["EncodeTime"])[:-1],"%Y:%m:%d %H:%M:%S")
+            datetime_encodetime = datetime.strptime(movie_data_dict["EncodeTime"],"%Y:%m:%d %H:%M:%S%z").astimezone()
             #put the updated time back into the copy of the movie data
             movie_data_dict.update({"EncodeTime":datetime_encodetime})
-            #put the movie data dict into the new datetime dict
+            #put the movie and the movie data dict into the new datetime dict
             datetime_updated_dict.update({movie:movie_data_dict})
 
     return datetime_updated_dict
