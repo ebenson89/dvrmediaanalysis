@@ -20,19 +20,39 @@ def remove_list (media_dict):
         simple_dict.update({movie:media_dict[movie][0]})
     return (simple_dict)
 
-def convert_encode_time(media_dict):
-    ''' Convert all EncodeTime to a valid datetime object '''
-    #Current london time - 6 to get chicago time
+def show_length (time_string):
+    #Round the times in the runtime to the nearest half hour
+    minutes = int(time_string[2:4])
+    
+    #round down to .0
+    if minutes < 14:
+        rounded_time = time_string[:1] + ".0"
+    #round up to .5
+    else:
+        rounded_time = time_string[:1] + ".5"
+
+    return (rounded_time)
+
+
+def cleanup_time(media_dict):
+    ''' Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour'''
     datetime_updated_dict = {}
     #Run through dict
     for movie in media_dict:
         if "EncodeTime" in media_dict[movie]: #Also removes invalid entries
             #copy the movie data dict
             movie_data_dict = media_dict[movie]
-            #copy encode time string and update it to datetime obj and get rid of the Z
+
+            #copy encode time string and update it to datetime obj with timezone
             datetime_encodetime = datetime.strptime(movie_data_dict["EncodeTime"],"%Y:%m:%d %H:%M:%S%z").astimezone()
+            #Call show_length to round the runtimes
+            simple_runtime = show_length(movie_data_dict["MediaOriginalRunTime"])
+
             #put the updated time back into the copy of the movie data
             movie_data_dict.update({"EncodeTime":datetime_encodetime})
+            #put the rounded runtime back into the copy of the movie data
+            movie_data_dict.update({"MediaOriginalRunTime":simple_runtime})
+
             #put the movie and the movie data dict into the new datetime dict
             datetime_updated_dict.update({movie:movie_data_dict})
 
@@ -48,7 +68,7 @@ def main():
     #Show a  movie with the original EncodeTime
     print (remove_list(get_media(media_file_name))[movie])
     #Show the same movie with the updated EncodeTime
-    print (convert_encode_time(remove_list(get_media(media_file_name)))[movie])
+    print (cleanup_time(remove_list(get_media(media_file_name)))[movie])
 
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
