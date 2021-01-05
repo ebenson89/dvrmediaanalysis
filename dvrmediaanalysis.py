@@ -2,6 +2,8 @@
 
 import json
 from datetime import datetime
+import pandas as pd
+from pandas import DataFrame, Series
 
 media_file_name = "recordings.json"
 
@@ -64,11 +66,18 @@ def main():
     DVR media analysis -- or see what Mom is watching to find what streaming services would work best for her
     """
 
-    movie = "2019 Christmas- A First Look Preview Special_HALLHD_2019_07_13_21_00_01.wtv"
+    #movie = "2019 Christmas- A First Look Preview Special_HALLHD_2019_07_13_21_00_01.wtv"
     #Show a  movie with the original EncodeTime
-    print (remove_list(get_media(media_file_name))[movie])
+    #print (remove_list(get_media(media_file_name))[movie])
     #Show the same movie with the updated EncodeTime
-    print (cleanup_time(remove_list(get_media(media_file_name)))[movie])
+    #print (cleanup_time(remove_list(get_media(media_file_name)))[movie])
+
+    #Put the movie dict into the pandas dataframe
+    movies_dataframe = pd.DataFrame(data=cleanup_time(remove_list(get_media(media_file_name))))
+    #Transpose the dataframe
+    transposed_movies_dataframe = movies_dataframe.T
+    #Show the movie dataframe
+    print (transposed_movies_dataframe)
 
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
