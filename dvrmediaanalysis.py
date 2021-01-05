@@ -60,6 +60,20 @@ def cleanup_time(media_dict):
 
     return datetime_updated_dict
 
+def find_all_unique_movies(media_dict):
+    #Run through the clean data dict and pull out the unique movies and put them in a dict
+    unique_movietitles = []
+    unique_moviesdict = {}
+    for movie in media_dict:
+        if media_dict[movie]["Title"] not in unique_movietitles:
+            unique_movietitles.append(media_dict[movie]["Title"])
+            unique_moviesdict.update({movie:media_dict[movie]})
+    return unique_moviesdict
+
+def dict_to_dataframe(media_dict):
+    #Put a dict into a dataframe and transpose it
+    return pd.DataFrame(data=media_dict).T
+
 
 def main():
     """
@@ -72,12 +86,18 @@ def main():
     #Show the same movie with the updated EncodeTime
     #print (cleanup_time(remove_list(get_media(media_file_name)))[movie])
 
+    #Pull and clean up the raw file data into a dict
+    clean_moviedict = cleanup_time(remove_list(get_media(media_file_name)))
     #Put the movie dict into the pandas dataframe
-    movies_dataframe = pd.DataFrame(data=cleanup_time(remove_list(get_media(media_file_name))))
-    #Transpose the dataframe
-    transposed_movies_dataframe = movies_dataframe.T
-    #Show the movie dataframe
-    print (transposed_movies_dataframe)
+    main_movies_dataframe = dict_to_dataframe(clean_moviedict)
+    #Find the unique movies in the cleaned up data and put it in a dataframe
+    unique_movies_dataframe = dict_to_dataframe(find_all_unique_movies(clean_moviedict))
+    
+    #Show the main movie dataframe
+    #print ("Main movie dataframe: ", main_movies_dataframe)
+    #Show the unique movie dataframe
+    print ("Unique movie dataframe :", unique_movies_dataframe)
+
 
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
