@@ -60,15 +60,9 @@ def cleanup_time(media_dict):
 
     return datetime_updated_dict
 
-def find_all_unique_movies(media_dict):
-    #Run through the clean data dict and pull out the unique movies and put them in a dict
-    unique_movietitles = []
-    unique_moviesdict = {}
-    for movie in media_dict:
-        if media_dict[movie]["Title"] not in unique_movietitles:
-            unique_movietitles.append(media_dict[movie]["Title"])
-            unique_moviesdict.update({movie:media_dict[movie]})
-    return unique_moviesdict
+def find_all_unique_movies(media_dataframe):
+    #Return all unique movie titles in dataframe
+    return media_dataframe['Title'].unique()
 
 def dict_to_dataframe(media_dict):
     #Put a dict into a dataframe and transpose it
@@ -90,13 +84,13 @@ def main():
     clean_moviedict = cleanup_time(remove_list(get_media(media_file_name)))
     #Put the movie dict into the pandas dataframe
     main_movies_dataframe = dict_to_dataframe(clean_moviedict)
-    #Find the unique movies in the cleaned up data and put it in a dataframe
-    unique_movies_dataframe = dict_to_dataframe(find_all_unique_movies(clean_moviedict))
-    
     #Show the main movie dataframe
-    #print ("Main movie dataframe: ", main_movies_dataframe)
-    #Show the unique movie dataframe
-    print ("Unique movie dataframe :", unique_movies_dataframe)
+    print ("Main movie dataframe: ", main_movies_dataframe)
+
+    #Find all unique movie titles
+    unique_movies_dataframe = find_all_unique_movies(main_movies_dataframe)
+    #Show the unique movies dataframe
+    print ("Unique movies dataframe: ", unique_movies_dataframe)
 
 
 
