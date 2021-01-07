@@ -35,7 +35,6 @@ def show_length (time_string):
 
     return (rounded_time)
 
-
 def cleanup_time(media_dict):
     ''' Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour'''
     datetime_updated_dict = {}
@@ -60,14 +59,13 @@ def cleanup_time(media_dict):
 
     return datetime_updated_dict
 
-def find_all_unique_movies(media_dataframe):
-    #Return all unique movie titles in dataframe
-    return media_dataframe['Title'].unique()
-
 def dict_to_dataframe(media_dict):
     #Put a dict into a dataframe and transpose it
     return pd.DataFrame(data=media_dict).T
 
+def find_all_unique_movies(media_dataframe):
+    #Return all unique movie titles in dataframe
+    return media_dataframe.drop_duplicates(subset=['Title'])
 
 def main():
     """
