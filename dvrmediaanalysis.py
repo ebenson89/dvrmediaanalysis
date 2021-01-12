@@ -33,7 +33,7 @@ def show_length (time_string):
     else:
         rounded_time = time_string[:1] + ".5"
 
-    return (rounded_time)
+    return (int(float(rounded_time)))
 
 def cleanup_time(media_dict):
     ''' Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour'''
@@ -83,12 +83,15 @@ def main():
     #Put the movie dict into the pandas dataframe
     main_movies_dataframe = dict_to_dataframe(clean_moviedict)
     #Show the main movie dataframe
-    print ("Main movie dataframe: ", main_movies_dataframe)
+    #print ("Main movie dataframe: ", main_movies_dataframe)
 
     #Find all unique movie titles
     unique_movies_dataframe = find_all_unique_movies(main_movies_dataframe)
     #Show the unique movies dataframe
-    print ("Unique movies dataframe: ", unique_movies_dataframe)
+    #print ("Unique movies dataframe: ", unique_movies_dataframe)
+
+    #Show the total watch time for each show in descending order
+    print (main_movies_dataframe.groupby('Title')['MediaOriginalRunTime'].sum().sort_values(ascending = False))
 
 
 
