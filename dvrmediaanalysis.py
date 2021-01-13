@@ -33,7 +33,7 @@ def show_length (time_string):
     else:
         rounded_time = time_string[:1] + ".5"
 
-    return (int(float(rounded_time)))
+    return (float(rounded_time))
 
 def cleanup_time(media_dict):
     ''' Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour'''
