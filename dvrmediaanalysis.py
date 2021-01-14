@@ -25,13 +25,17 @@ def remove_list (media_dict):
 def show_length (time_string):
     #Round the times in the runtime to the nearest half hour
     minutes = int(time_string[2:4])
+    hours = int(time_string[:1])
     
-    #round down to .0
-    if minutes < 14:
+    #round to .0 if under 15
+    if minutes < 15:
         rounded_time = time_string[:1] + ".0"
-    #round up to .5
-    else:
+    #round to .5 if 15 to 44
+    elif minutes < 45:
         rounded_time = time_string[:1] + ".5"
+    #round up to the next hour if 45 or greater
+    else:
+        rounded_time = str(hours + 1) + ".0"
 
     return (float(rounded_time))
 
@@ -78,6 +82,13 @@ def main():
     #Show the same movie with the updated EncodeTime
     #print (cleanup_time(remove_list(get_media(media_file_name)))[movie])
 
+    #Check show length function
+    print ("1:00:00 to ", show_length("1:00:00"))
+    print ("1:14:00 to ", show_length("1:14:00"))
+    print ("1:15:00 to ", show_length("1:15:00"))
+    print ("1:44:00 to ", show_length("1:44:00"))
+    print ("1:45:00 to ", show_length("1:45:00"))
+
     #Pull and clean up the raw file data into a dict
     clean_moviedict = cleanup_time(remove_list(get_media(media_file_name)))
     #Put the movie dict into the pandas dataframe
@@ -91,7 +102,7 @@ def main():
     #print ("Unique movies dataframe: ", unique_movies_dataframe)
 
     #Show the total watch time for each show in descending order
-    print (main_movies_dataframe.groupby('Title')['MediaOriginalRunTime'].sum().sort_values(ascending = False))
+    #print (main_movies_dataframe.groupby('Title')['MediaOriginalRunTime'].sum().sort_values(ascending = False))
 
 
 
