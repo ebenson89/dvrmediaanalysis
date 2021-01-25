@@ -83,11 +83,11 @@ def main():
     #print (cleanup_time(remove_list(get_media(media_file_name)))[movie])
 
     #Check show length function
-    print ("1:00:00 to ", show_length("1:00:00"))
-    print ("1:14:00 to ", show_length("1:14:00"))
-    print ("1:15:00 to ", show_length("1:15:00"))
-    print ("1:44:00 to ", show_length("1:44:00"))
-    print ("1:45:00 to ", show_length("1:45:00"))
+    #print ("1:00:00 to ", show_length("1:00:00"))
+    #print ("1:14:00 to ", show_length("1:14:00"))
+    #print ("1:15:00 to ", show_length("1:15:00"))
+    #print ("1:44:00 to ", show_length("1:44:00"))
+    #print ("1:45:00 to ", show_length("1:45:00"))
 
     #Pull and clean up the raw file data into a dict
     clean_moviedict = cleanup_time(remove_list(get_media(media_file_name)))
@@ -103,6 +103,9 @@ def main():
 
     #Show the total watch time for each show in descending order
     #print (main_movies_dataframe.groupby('Title')['MediaOriginalRunTime'].sum().sort_values(ascending = False))
+
+    #Show how many shows are watched with a given duration
+    print (main_movies_dataframe['MediaOriginalRunTime'].value_counts())
 
 
 
