@@ -2,8 +2,10 @@
 
 import json
 from datetime import datetime
+import numpy as np
 import pandas as pd
 from pandas import DataFrame, Series
+import matplotlib.pyplot as plt
 
 media_file_name = "recordings.json"
 
@@ -71,6 +73,16 @@ def find_all_unique_movies(media_dataframe):
     #Return all unique movie titles in dataframe
     return media_dataframe.drop_duplicates(subset=['Title'])
 
+def get_graph_height(height_dataframe, keys_dataframe):
+    height = []
+
+    for key in keys_dataframe:
+        height.append(height_dataframe[key])
+
+    return height
+
+
+
 def main():
     """
     DVR media analysis -- or see what Mom is watching to find what streaming services would work best for her
@@ -104,9 +116,21 @@ def main():
     #Show the total watch time for each show in descending order
     #print (main_movies_dataframe.groupby('Title')['MediaOriginalRunTime'].sum().sort_values(ascending = False))
 
-    #Show how many shows are watched with a given duration
-    print (main_movies_dataframe['MediaOriginalRunTime'].value_counts())
+    #How many shows are watched with a given duration
+    unique_show_durations = main_movies_dataframe['MediaOriginalRunTime'].value_counts()
 
+    #Get all the keys in the dataframe
+    keys = unique_show_durations.keys()
+    #Find the height of the graph data
+    height = get_graph_height(unique_show_durations, keys)
+
+    #Print Bar chart, bar(x-axis, height)
+    plt.xticks(range(len(height)), keys)
+    plt.xlabel('Duration in half hours')
+    plt.ylabel('Number of Shows')
+    plt.title('How many shows are watched with a given duration')
+    plt.bar(range(len(height)), height)
+    plt.show()
 
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
