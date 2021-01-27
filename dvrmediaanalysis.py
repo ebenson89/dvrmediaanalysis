@@ -120,17 +120,26 @@ def main():
     unique_show_durations = main_movies_dataframe['MediaOriginalRunTime'].value_counts()
 
     #Get all the keys in the dataframe
-    keys = unique_show_durations.keys()
+    # keys = unique_show_durations.keys()
     #Find the height of the graph data
-    height = get_graph_height(unique_show_durations, keys)
+    # height = get_graph_height(unique_show_durations, keys)
 
     #Print Bar chart, bar(x-axis, height)
-    plt.xticks(range(len(height)), keys)
+    # plt.xticks(range(len(height)), keys)
+    # plt.bar(range(len(height)), height)
+    # plt.show()
+
+    #Show how many shows are watched with a given duration
+    print(main_movies_dataframe['MediaOriginalRunTime'].value_counts())
+    
+    main_movies_dataframe['MediaOriginalRunTime'].value_counts().plot(kind='bar')
+    
     plt.xlabel('Duration in half hours')
     plt.ylabel('Number of Shows')
     plt.title('How many shows are watched with a given duration')
-    plt.bar(range(len(height)), height)
+    
     plt.show()
+
 
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
