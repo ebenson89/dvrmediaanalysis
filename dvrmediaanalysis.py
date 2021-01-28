@@ -76,6 +76,7 @@ def find_all_unique_movies(media_dataframe):
 def get_graph_height(height_dataframe, keys_dataframe):
     height = []
 
+    #Pull the data out of the dataframe
     for key in keys_dataframe:
         height.append(height_dataframe[key])
 
@@ -118,6 +119,8 @@ def main():
 
     #How many shows are watched with a given duration
     unique_show_durations = main_movies_dataframe['MediaOriginalRunTime'].value_counts()
+    #print (unique_show_durations)
+    
 
     #Get all the keys in the dataframe
     keys = unique_show_durations.keys()
