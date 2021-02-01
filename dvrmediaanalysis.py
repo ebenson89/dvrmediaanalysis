@@ -32,7 +32,7 @@ def show_length (time_string):
     #round to .5 if under 30
     if minutes < 30:
         rounded_time = time_string[:1] + ".5"
-    #round to .5 if 15 to 44
+    #round to .5 if 15 to 44, yes this is redundent, might be changed later
     elif minutes < 45:
         rounded_time = time_string[:1] + ".5"
     #round up to the next hour if 45 or greater
@@ -121,29 +121,18 @@ def main():
     unique_show_durations = main_movies_dataframe['MediaOriginalRunTime'].value_counts()
     #print (unique_show_durations)
     
-
     #Get all the keys in the dataframe
-    # keys = unique_show_durations.keys()
+    keys = unique_show_durations.keys()
     #Find the height of the graph data
-    # height = get_graph_height(unique_show_durations, keys)
+    height = get_graph_height(unique_show_durations, keys)
 
     #Print Bar chart, bar(x-axis, height)
-    # plt.xticks(range(len(height)), keys)
-    # plt.bar(range(len(height)), height)
-    # plt.show()
-
-    #Show how many shows are watched with a given duration
-    print(main_movies_dataframe['MediaOriginalRunTime'].value_counts())
-    
-    main_movies_dataframe['MediaOriginalRunTime'].value_counts().plot(kind='bar')
-    
     plt.xlabel('Duration in half hours')
     plt.ylabel('Number of Shows')
     plt.title('How many shows are watched with a given duration')
-    
+    plt.xticks(range(len(height)), keys)
+    plt.bar(range(len(height)), height)
     plt.show()
-
-
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
 if __name__ == "__main__":
