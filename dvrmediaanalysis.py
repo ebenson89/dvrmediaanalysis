@@ -29,9 +29,9 @@ def show_length (time_string):
     minutes = int(time_string[2:4])
     hours = int(time_string[:1])
     
-    #round to .0 if under 15
-    if minutes < 15:
-        rounded_time = time_string[:1] + ".0"
+    #round to .5 if under 30
+    if minutes < 30:
+        rounded_time = time_string[:1] + ".5"
     #round to .5 if 15 to 44
     elif minutes < 45:
         rounded_time = time_string[:1] + ".5"
