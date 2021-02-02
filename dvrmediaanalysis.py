@@ -54,11 +54,15 @@ def cleanup_time(media_dict):
             datetime_encodetime = datetime.strptime(movie_data_dict["EncodeTime"],"%Y:%m:%d %H:%M:%S%z").astimezone()
             #Call show_length to round the runtimes
             simple_runtime = show_length(movie_data_dict["MediaOriginalRunTime"])
+            #Find the hour that the show was recorded
+            recorded_hour = datetime_encodetime.hour
 
             #put the updated time back into the copy of the movie data
             movie_data_dict.update({"EncodeTime":datetime_encodetime})
             #put the rounded runtime back into the copy of the movie data
             movie_data_dict.update({"MediaOriginalRunTime":simple_runtime})
+            #Add hour that show was recorded to the dict
+            movie_data_dict.update({"RecordedHour":recorded_hour})
 
             #put the movie and the movie data dict into the new datetime dict
             datetime_updated_dict.update({movie:movie_data_dict})
@@ -82,7 +86,35 @@ def get_graph_height(height_dataframe, keys_dataframe):
 
     return height
 
+#Show a graph of a how many shows are watched with a given duration
+def show_duration_graph(show_duration_dataframe):
+    #Get all the keys in the dataframe
+    keys = show_duration_dataframe.keys()
+    #Find the height of the graph data
+    height = get_graph_height(show_duration_dataframe, keys)
 
+    #Print Bar chart, bar(x-axis, height)
+    plt.xlabel('Duration in half hours')
+    plt.ylabel('Number of Shows')
+    plt.title('How many shows are watched with a given duration')
+    plt.xticks(range(len(height)), keys)
+    plt.bar(range(len(height)), height)
+    plt.show()
+
+#Show a graph that shows the hour that the show was recorded
+def show_recorded_graph(show_recorded_dataframe):
+    #Get all the keys in the dataframe
+    keys = show_recorded_dataframe.keys()
+    #Find the height of the graph data
+    height = get_graph_height(show_recorded_dataframe, keys)
+
+    #Print Bar chart, bar(x-axis, height)
+    plt.xlabel('Hour Of The Day')
+    plt.ylabel('Total Shows Recorded At That Hour')
+    plt.title('At What Times Are The Shows Recorded, 24 hour clock')
+    plt.xticks(range(len(height)), keys)
+    plt.bar(range(len(height)), height)
+    plt.show()
 
 def main():
     """
@@ -104,35 +136,26 @@ def main():
 
     #Pull and clean up the raw file data into a dict
     clean_moviedict = cleanup_time(remove_list(get_media(media_file_name)))
+    #print ("Clean movie dictionary:\n", clean_moviedict)
     #Put the movie dict into the pandas dataframe
     main_movies_dataframe = dict_to_dataframe(clean_moviedict)
     #Show the main movie dataframe
-    #print ("Main movie dataframe: ", main_movies_dataframe)
+    #print ("Main movie dataframe:\n", main_movies_dataframe)
 
     #Find all unique movie titles
-    unique_movies_dataframe = find_all_unique_movies(main_movies_dataframe)
+    #unique_movies_dataframe = find_all_unique_movies(main_movies_dataframe)
     #Show the unique movies dataframe
     #print ("Unique movies dataframe: ", unique_movies_dataframe)
 
     #Show the total watch time for each show in descending order
     #print (main_movies_dataframe.groupby('Title')['MediaOriginalRunTime'].sum().sort_values(ascending = False))
 
-    #How many shows are watched with a given duration
-    unique_show_durations = main_movies_dataframe['MediaOriginalRunTime'].value_counts()
-    #print (unique_show_durations)
+    #Create a graph of how many shows are watched with a given duration
+    #show_duration_graph(main_movies_dataframe.value_counts('MediaOriginalRunTime'))
     
-    #Get all the keys in the dataframe
-    keys = unique_show_durations.keys()
-    #Find the height of the graph data
-    height = get_graph_height(unique_show_durations, keys)
-
-    #Print Bar chart, bar(x-axis, height)
-    plt.xlabel('Duration in half hours')
-    plt.ylabel('Number of Shows')
-    plt.title('How many shows are watched with a given duration')
-    plt.xticks(range(len(height)), keys)
-    plt.bar(range(len(height)), height)
-    plt.show()
+    #Create a graph that shows the hour that the show was recorded, key: EncodeTime, value: datetime object
+    show_recorded_graph(main_movies_dataframe.value_counts('RecordedHour').sort_index())
+    #print(main_movies_dataframe.value_counts('RecordedHour').sort_index())
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
 if __name__ == "__main__":
