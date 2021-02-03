@@ -23,7 +23,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Chose a Graph</string>
+       <string>Choose a Graph</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -44,6 +44,13 @@
     </item>
     <item row="1" column="1">
      <widget class="QListWidget" name="graph_list"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="error_output_label">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
