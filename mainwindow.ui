@@ -30,6 +30,9 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="1">
+     <widget class="QListWidget" name="graph_list"/>
+    </item>
     <item row="2" column="1">
      <widget class="QPushButton" name="build_graph_button">
       <property name="font">
@@ -42,11 +45,8 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QListWidget" name="graph_list"/>
-    </item>
     <item row="3" column="1">
-     <widget class="QLabel" name="error_output_label">
+     <widget class="QLabel" name="graph_output_label">
       <property name="text">
        <string/>
       </property>

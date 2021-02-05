@@ -10,7 +10,7 @@ import os
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIntValidator
+from PyQt5.QtGui import QIntValidator, QIcon, QPixmap
 
 graph_file_name = "graph_skeletons.json"
 media_file_name = "recordings.json"
@@ -23,10 +23,12 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
+        #Variables
         self.clean_moviedict = self.cleanup_time(self.remove_list(self.get_data(media_file_name)))
         self.main_movies_dataframe = self.dict_to_dataframe(self.clean_moviedict)
         self.main_graph_dict = self.get_data(graph_file_name)
         self.single_graph_labels_dict = {}
+        #Functions
         self.graph_options()
         self.build_graph_button.clicked.connect(self.build_graph)
         self.graph_list.clicked.connect(self.choose_graph)
@@ -127,7 +129,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def build_graph(self):
 
         if self.single_graph_labels_dict == {}:
-            self.error_output_label.setText("Please choose a graph.")
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setWindowTitle("Error")
+            msgBox.setText("Please choose a graph.")
+            msgBox.exec()
 
         else:
             #Find the dataframe view string
@@ -146,6 +152,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             plt.title(self.single_graph_labels_dict["Title"])
             plt.xticks(range(len(height)), keys)
             plt.bar(range(len(height)), height)
+            graph_file_name = "Saved Graphs\\" + self.single_graph_labels_dict["Title"] + ".jpg"
+            plt.savefig(graph_file_name, format ="jpg")
+            #self.graph_output_label.setQpixmap(graph_file_name)
             plt.show()
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
