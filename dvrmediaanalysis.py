@@ -113,7 +113,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def find_all_unique_movies(self, media_dataframe):
         return media_dataframe.drop_duplicates(subset=['Title'])
 
-    #Return the hr=eight data from the graph
+    #Return the height data from the graph
     def get_graph_height(self, height_dataframe, keys_dataframe):
         height = []
 
