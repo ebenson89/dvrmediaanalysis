@@ -15,7 +15,7 @@
     },
     "Channels by Total Time": {
         "Title": "Channels by Total Time",
-        "DataFrameCall": "self.main_movies_dataframe.groupby('MediaStationCallSign')['MediaOriginalRunTime'].sum()",
+        "DataFrameCall": "self.main_movies_dataframe.groupby('MediaStationCallSign')['MediaOriginalRunTime'].sum().sort_values(ascending = False)",
         "Chart": "Pie"
     }
 }

@@ -115,19 +115,52 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def find_all_unique_movies(self, media_dataframe):
         return media_dataframe.drop_duplicates(subset=['Title'])
 
-    #Return the height data from the graph
-    def get_graph_height(self, height_dataframe, keys_dataframe):
-        height = []
+    #Return the data for the graph
+    def get_graph_data(self, dataframe, keys_dataframe):
+        data = []
 
         #Pull the data out of the dataframe
         for key in keys_dataframe:
-            height.append(height_dataframe[key])
+            data.append(dataframe[key])
 
-        return height
+        return data
 
+    #Save created graph
+    def save_graph(self, Title):
+        graph_file_name = "Saved Graphs\\" + Title + ".jpg"
+        plt.savefig(graph_file_name, format ="jpg")    
+    
+    #Build a bar graph
+    def bar_graph(self, new_dataframe, keys):
+        #Find the height of the bar graph data
+        height = self.get_graph_data(new_dataframe, keys)
+        #Print Bar chart, bar(x-axis, height)
+        plt.xlabel(self.single_graph_labels_dict["X-Lable"])
+        plt.ylabel(self.single_graph_labels_dict["Y-Lable"])
+        plt.title(self.single_graph_labels_dict["Title"])
+        plt.xticks(range(len(height)), keys)
+        plt.bar(range(len(height)), height)
+        #Save graph
+        self.save_graph(self.single_graph_labels_dict["Title"])
+        #self.graph_output_label.setQpixmap(graph_file_name)
+        plt.show()
+
+    #Build a pie graph
+    def pie_graph(self, new_dataframe, keys):
+        #Find the size of the bar graph data
+        size = self.get_graph_data(new_dataframe, keys)
+        #Print Pie chart, pie(size, lables)
+        plt.title(self.single_graph_labels_dict["Title"])
+        patches, texts = plt.pie(size)
+        plt.legend(patches, keys, loc="best")
+        #Save graph
+        self.save_graph(self.single_graph_labels_dict["Title"])
+        plt.show()
+    
     #Build the selected graph
     def build_graph(self):
 
+        #If no graph has been selected throw an error box
         if self.single_graph_labels_dict == {}:
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Warning)
@@ -143,19 +176,16 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             #Get all the keys in the dataframe
             keys = new_dataframe.keys()
-            #Find the height of the graph data
-            height = self.get_graph_height(new_dataframe, keys)
-
-            #Print Bar chart, bar(x-axis, height)
-            plt.xlabel(self.single_graph_labels_dict["X-Lable"])
-            plt.ylabel(self.single_graph_labels_dict["Y-Lable"])
-            plt.title(self.single_graph_labels_dict["Title"])
-            plt.xticks(range(len(height)), keys)
-            plt.bar(range(len(height)), height)
-            graph_file_name = "Saved Graphs\\" + self.single_graph_labels_dict["Title"] + ".jpg"
-            plt.savefig(graph_file_name, format ="jpg")
-            #self.graph_output_label.setQpixmap(graph_file_name)
-            plt.show()
+            
+            if self.single_graph_labels_dict["Chart"] == "Bar":
+                #Build bar graph
+                self.bar_graph(new_dataframe, keys)
+            elif self.single_graph_labels_dict["Chart"] == "Pie":
+                #Build pie graph
+                self.pie_graph(new_dataframe, keys)
+            else:
+                #Should never reach here
+                pass
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
 if __name__ == "__main__":
