@@ -135,8 +135,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #Find the height of the bar graph data
         height = self.get_graph_data(new_dataframe, keys)
         #Print Bar chart, bar(x-axis, height)
-        plt.xlabel(self.single_graph_labels_dict["X-Lable"])
-        plt.ylabel(self.single_graph_labels_dict["Y-Lable"])
+        plt.xlabel(self.single_graph_labels_dict["X-Label"])
+        plt.ylabel(self.single_graph_labels_dict["Y-Label"])
         plt.title(self.single_graph_labels_dict["Title"])
         plt.xticks(range(len(height)), keys)
         plt.bar(range(len(height)), height)
