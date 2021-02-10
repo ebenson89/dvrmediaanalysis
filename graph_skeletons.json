@@ -1,15 +1,15 @@
 {
     "Show Duration Graph": {
         "Title": "How many shows are watched with a given duration",
-        "X-Lable": "Duration in half hours",
-        "Y-Lable": "Number of Shows",
+        "X-Label": "Duration in half hours",
+        "Y-Label": "Number of Shows",
         "DataFrameCall": "self.main_movies_dataframe.value_counts('MediaOriginalRunTime')",
         "Chart": "Bar"
     },
     "Hour Recorded Graph": {
         "Title": "At What Times Are The Shows Recorded, 24 hour clock",
-        "X-Lable": "Hour Of The Day",
-        "Y-Lable": "Total Shows Recorded At That Hour",
+        "X-Label": "Hour Of The Day",
+        "Y-Label": "Total Shows Recorded At That Hour",
         "DataFrameCall": "self.main_movies_dataframe.value_counts('RecordedHour').sort_index()",
         "Chart": "Bar"
     },
