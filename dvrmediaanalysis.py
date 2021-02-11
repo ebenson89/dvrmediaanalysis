@@ -79,6 +79,12 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         return (float(rounded_time))
 
+    #Month number to string name
+    def month_int_to_str(self, month_int):
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+        return months[month_int - 1]
+    
     #Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour
     def cleanup_time(self, media_dict):
         datetime_updated_dict = {}
@@ -94,6 +100,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 simple_runtime = self.show_length(movie_data_dict["MediaOriginalRunTime"])
                 #Find the hour that the show was recorded
                 recorded_hour = datetime_encodetime.hour
+                #Find the month that the show was recorded
+                recorded_month = datetime_encodetime.month
+                #Find the year that the show was recorded
+                recorded_year = datetime_encodetime.year
+
+                #Put the year and month together
+                recorded_year_month = str(recorded_year) + ", " + self.month_int_to_str(recorded_month)
 
                 #put the updated time back into the copy of the movie data
                 movie_data_dict.update({"EncodeTime":datetime_encodetime})
@@ -101,6 +114,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 movie_data_dict.update({"MediaOriginalRunTime":simple_runtime})
                 #Add hour that show was recorded to the dict
                 movie_data_dict.update({"RecordedHour":recorded_hour})
+                #Add year and month that show was recorded to the dict
+                movie_data_dict.update({"RecordedYearMonth":recorded_year_month})
 
                 #put the movie and the movie data dict into the new datetime dict
                 datetime_updated_dict.update({movie:movie_data_dict})

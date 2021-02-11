@@ -17,5 +17,12 @@
         "Title": "Channels by Total Time",
         "DataFrameCall": "self.main_movies_dataframe.groupby('MediaStationCallSign')['MediaOriginalRunTime'].sum().sort_values(ascending = False)",
         "Chart": "Pie"
+    },
+    "Total Hours Recorded Per Month": {
+        "Title": "Total Hours Recorded Per Month",
+        "X-Label": "Month",
+        "Y-Label": "Total Hours Recorded",
+        "DataFrameCall": "self.main_movies_dataframe.groupby('RecordedYearMonth')['MediaOriginalRunTime'].sum().sort_index()",
+        "Chart": "Bar"
     }
 }
