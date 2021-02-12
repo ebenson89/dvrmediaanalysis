@@ -20,9 +20,16 @@
     },
     "Total Hours Recorded Per Month": {
         "Title": "Total Hours Recorded Per Month",
-        "X-Label": "Month",
+        "X-Label": "Year, Month",
         "Y-Label": "Total Hours Recorded",
-        "DataFrameCall": "self.main_movies_dataframe.groupby('RecordedYearMonth')['MediaOriginalRunTime'].sum()",
+        "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth']])['MediaOriginalRunTime'].sum()",
         "Chart": "Bar"
+    },
+    "Show Hours Recorded by Channel Per Month and Year": {
+        "Title": "Show Hours Recorded by Channel Per Month and Year",
+        "X-Label": "Year, Month",
+        "Y-Label": "Total Hours Recorded",
+        "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth'], self.main_movies_dataframe['MediaStationCallSign']])['MediaOriginalRunTime'].sum()",
+        "Chart": "SBar"
     }
 }

@@ -105,17 +105,16 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 #Find the year that the show was recorded
                 recorded_year = datetime_encodetime.year
 
-                #Put the year and month together
-                recorded_year_month = (recorded_year, recorded_month)
-
                 #put the updated time back into the copy of the movie data
                 movie_data_dict.update({"EncodeTime":datetime_encodetime})
                 #put the rounded runtime back into the copy of the movie data
                 movie_data_dict.update({"MediaOriginalRunTime":simple_runtime})
                 #Add hour that show was recorded to the dict
                 movie_data_dict.update({"RecordedHour":recorded_hour})
-                #Add year and month that show was recorded to the dict
-                movie_data_dict.update({"RecordedYearMonth":recorded_year_month})
+                #Add year that show was recorded to the dict
+                movie_data_dict.update({"RecordedYear":recorded_year})
+                #Add month that show was recorded to the dict
+                movie_data_dict.update({"RecordedMonth":recorded_month})
 
                 #put the movie and the movie data dict into the new datetime dict
                 datetime_updated_dict.update({movie:movie_data_dict})
@@ -173,6 +172,17 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
     
+    #Build a stacked bar graph
+    def stacked_bar_graph(self, new_dataframe, keys):
+        #Plot abd label stacked bar graph
+        new_dataframe.unstack().fillna(0).plot(kind='bar', stacked=True)
+        plt.xlabel(self.single_graph_labels_dict["X-Label"])
+        plt.ylabel(self.single_graph_labels_dict["Y-Label"])
+        plt.title(self.single_graph_labels_dict["Title"])
+        #Save graph
+        self.save_graph(self.single_graph_labels_dict["Title"])
+        plt.show()
+    
     #Build the selected graph
     def build_graph(self):
 
@@ -199,6 +209,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             elif self.single_graph_labels_dict["Chart"] == "Pie":
                 #Build pie graph
                 self.pie_graph(new_dataframe, keys)
+            elif self.single_graph_labels_dict["Chart"] == "SBar":
+                #Build pie graph
+                self.stacked_bar_graph(new_dataframe, keys)
             else:
                 #Should never reach here
                 pass
