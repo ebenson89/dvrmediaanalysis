@@ -25,8 +25,8 @@
         "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth']])['MediaOriginalRunTime'].sum()",
         "Chart": "Bar"
     },
-    "Show Hours Recorded by Channel Per Month and Year": {
-        "Title": "Show Hours Recorded by Channel Per Month and Year",
+    "Hours Recorded by Channel Per Month and Year": {
+        "Title": "Hours Recorded by Channel Per Month and Year",
         "X-Label": "Year, Month",
         "Y-Label": "Total Hours Recorded",
         "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth'], self.main_movies_dataframe['MediaStationCallSign']])['MediaOriginalRunTime'].sum()",
