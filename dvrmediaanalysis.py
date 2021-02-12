@@ -106,7 +106,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 recorded_year = datetime_encodetime.year
 
                 #Put the year and month together
-                recorded_year_month = str(recorded_year) + ", " + self.month_int_to_str(recorded_month)
+                recorded_year_month = (recorded_year, recorded_month)
 
                 #put the updated time back into the copy of the movie data
                 movie_data_dict.update({"EncodeTime":datetime_encodetime})
@@ -154,6 +154,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.ylabel(self.single_graph_labels_dict["Y-Label"])
         plt.title(self.single_graph_labels_dict["Title"])
         plt.xticks(range(len(height)), keys)
+        plt.xticks(rotation=90)
         plt.bar(range(len(height)), height)
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
