@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+    <title>Show Graphs</title>
+</head>
+
+<body>
+    <div>
+        <table>
+        % for graph in graphs:
+            <tr>
+                <td>
+                    <img src="{{graph}}">
+                </td>
+            </tr>
+        % end
+        </table>
+    </div>
+</body>
