@@ -166,8 +166,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         size = self.get_graph_data(new_dataframe, keys)
         #Print Pie chart, pie(size, lables)
         plt.title(self.single_graph_labels_dict["Title"])
+        plt.pie(size, autopct='%1.1f%%')
         patches, texts = plt.pie(size)
-        plt.legend(patches, keys, loc="best")
+        plt.legend(patches, keys)
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
