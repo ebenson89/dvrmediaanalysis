@@ -1,18 +1,25 @@
 """Launch a local web server to display the plotted graphs"""
 from bottle import route, run, static_file, template
+import os
+import sys
 
 graphs_folder = r"./Saved Graphs/"
 webpagefile = "index.html"
 
 def get_graphs():
     """Returns a list of graph plots filenames"""
-    # TODO: Complete this function to get all available charts
-    assert False,"Complete this function to get all available charts"
+    file_name_list = []
+
+    for _ , _ , file_name in os.walk("Saved Graphs"):
+        if file_name[0][-4] == ".jpg":
+            file_name_list.append(file_name)
+
+    return file_name_list
 
 @route(graphs_folder+"/<filename>")
 def server_static(filename):
     """ Get any needed static files -- the graph files """
-    return static_file(filename, root=graphs_folder)    
+    return static_file(filename, root=graphs_folder)
 
 @route("/")
 def webserve():
