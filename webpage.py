@@ -22,12 +22,12 @@ def get_graphs():
         #print (file_name)
         if file_name[-4:] == ".jpg":
             #print (file_name)
-            graph_name_list.append(graphs_folder + file_name)
+            graph_name_list.append(file_name)
 
     print (graph_name_list)
     return graph_name_list
 
-@route(graphs_folder+"/<filename>")
+@route("/<filename>")
 def server_static(filename):
     """ Get any needed static files -- the graph files """
     return static_file(filename, root=graphs_folder)
