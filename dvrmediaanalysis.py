@@ -168,7 +168,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.title(self.single_graph_labels_dict["Title"])
         plt.pie(size, autopct='%1.1f%%')
         patches, texts = plt.pie(size)
-        plt.legend(patches, keys)
+        plt.legend(patches, keys, bbox_to_anchor=(1,1), loc="upper left")
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
@@ -180,6 +180,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         plt.xlabel(self.single_graph_labels_dict["X-Label"])
         plt.ylabel(self.single_graph_labels_dict["Y-Label"])
         plt.title(self.single_graph_labels_dict["Title"])
+        plt.legend(bbox_to_anchor=(1,1), loc="upper left")
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()

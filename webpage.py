@@ -11,20 +11,12 @@ def get_graphs():
     graph_name_list = []
     file_names_list = []
 
-    #for _ , _ , file_names in os.walk(graphs_folder):
-        #file_names_list = file_names.copy()
-
     dirpath, _, file_names_list = next(os.walk(graphs_folder))
     
-    #print (file_names_list)
-
     for file_name in file_names_list:
-        #print (file_name)
         if file_name[-4:] == ".jpg":
-            #print (file_name)
             graph_name_list.append(file_name)
 
-    print (graph_name_list)
     return graph_name_list
 
 @route("/<filename>")
