@@ -41,14 +41,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Build The Graph</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="graph_output_label">
-      <property name="text">
-       <string/>
+       <string>Refresh The Graph</string>
       </property>
      </widget>
     </item>
