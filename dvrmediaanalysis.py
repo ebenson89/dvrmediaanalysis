@@ -149,12 +149,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #Find the height of the bar graph data
         height = self.get_graph_data(new_dataframe, keys)
         #Print Bar chart, bar(x-axis, height)
+        plt.figure(figsize=(7,8))
+        plt.bar(range(len(height)), height)
+        plt.xticks(range(len(height)), keys)
+        plt.xticks(rotation=90)
         plt.xlabel(self.single_graph_labels_dict["X-Label"])
         plt.ylabel(self.single_graph_labels_dict["Y-Label"])
         plt.title(self.single_graph_labels_dict["Title"])
-        plt.xticks(range(len(height)), keys)
-        plt.xticks(rotation=90)
-        plt.bar(range(len(height)), height)
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         #self.graph_output_label.setQpixmap(graph_file_name)
@@ -165,10 +166,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #Find the size of the bar graph data
         size = self.get_graph_data(new_dataframe, keys)
         #Print Pie chart, pie(size, lables)
-        plt.title(self.single_graph_labels_dict["Title"])
+        plt.figure(figsize=(8,6))
         plt.pie(size, autopct='%1.1f%%')
         patches, texts = plt.pie(size)
         plt.legend(patches, keys, bbox_to_anchor=(1,1), loc="upper left")
+        plt.title(self.single_graph_labels_dict["Title"])
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
@@ -176,11 +178,12 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     #Build a stacked bar graph
     def stacked_bar_graph(self, new_dataframe, keys):
         #Plot abd label stacked bar graph
-        new_dataframe.unstack().fillna(0).plot(kind='bar', stacked=True)
+        new_dataframe.unstack().fillna(0).plot(kind='bar', stacked=True, figsize=(13,9))
         plt.xlabel(self.single_graph_labels_dict["X-Label"])
         plt.ylabel(self.single_graph_labels_dict["Y-Label"])
         plt.title(self.single_graph_labels_dict["Title"])
         plt.legend(bbox_to_anchor=(1,1), loc="upper left")
+        
         #Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
