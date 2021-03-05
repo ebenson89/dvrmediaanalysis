@@ -20,6 +20,7 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def __init__(self):
+        """Create the a window that displays all graphs that can be built or updated."""
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
@@ -33,28 +34,28 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.build_graph_button.clicked.connect(self.build_graph)
         self.graph_list.clicked.connect(self.choose_graph)
 
-    #What graphs the user can choose from
     def graph_options(self):
+        """Display what graphs the user can choose from."""
         i = 0
 
         for graph_name in self.main_graph_dict:
             self.graph_list.insertItem(i, graph_name)
             i += 1
 
-    #Choose what graph to build
     def choose_graph(self, qmodelindex):
+        """Select what graph to build on the GUI."""
         graph_name = self.graph_list.currentItem()
         self.single_graph_labels_dict.update(self.main_graph_dict[graph_name.text()])
 
-    #Get the data from the json file
     def get_data(self, json_file_name):
+        """#Get the data from the json file."""
         #Open json file
         with open(json_file_name) as media_file:
             #Returns json obj as a dictionary
             return json.load(media_file)
 
-    #Flatten each dictionary entry by replacing the list with the value that was in the list
     def remove_list (self, media_dict):
+        """Flatten each dictionary entry by replacing the list with the value that was in the list."""
         simple_dict = {}
         #Run though raw dict
         for movie in media_dict:
@@ -62,8 +63,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             simple_dict.update({movie:media_dict[movie][0]})
         return (simple_dict)
 
-    #Round the times in the runtime to the nearest half hour
     def show_length (self, time_string):
+        """Round the times in the runtime to the nearest half hour."""
         minutes = int(time_string[2:4])
         hours = int(time_string[:1])
         
@@ -79,14 +80,14 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         return (float(rounded_time))
 
-    #Month number to string name
     def month_int_to_str(self, month_int):
+        """Month number to string name."""
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
         return months[month_int - 1]
     
-    #Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour
     def cleanup_time(self, media_dict):
+        """Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour."""
         datetime_updated_dict = {}
         #Run through dict
         for movie in media_dict:
@@ -121,16 +122,16 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         return datetime_updated_dict
 
-    #Put a dict into a dataframe and transpose it
     def dict_to_dataframe(self, media_dict):
+        """Put a dict into a dataframe and transpose it."""
         return pd.DataFrame(data=media_dict).T
 
-    #Return all unique movie titles in dataframe
     def find_all_unique_movies(self, media_dataframe):
+        """Return all unique movie titles in dataframe."""
         return media_dataframe.drop_duplicates(subset=['Title'])
 
-    #Return the data for the graph
     def get_graph_data(self, dataframe, keys_dataframe):
+        """Return the data for the graph."""
         data = []
 
         #Pull the data out of the dataframe
@@ -139,13 +140,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         return data
 
-    #Save created graph
     def save_graph(self, Title):
+        """Save created graph."""
         graph_file_name = "Saved Graphs\\" + Title + ".jpg"
         plt.savefig(graph_file_name, format ="jpg")    
     
-    #Build a bar graph
     def bar_graph(self, new_dataframe, keys):
+        """Build a bar graph."""
         #Find the height of the bar graph data
         height = self.get_graph_data(new_dataframe, keys)
         #Print Bar chart, bar(x-axis, height)
@@ -161,8 +162,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #self.graph_output_label.setQpixmap(graph_file_name)
         plt.show()
 
-    #Build a pie graph
     def pie_graph(self, new_dataframe, keys):
+        """Build a pie graph."""
         #Find the size of the bar graph data
         size = self.get_graph_data(new_dataframe, keys)
         #Print Pie chart, pie(size, lables)
@@ -175,9 +176,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
     
-    #Build a stacked bar graph
     def stacked_bar_graph(self, new_dataframe, keys):
-        #Plot abd label stacked bar graph
+        """Build a stacked bar graph."""
+        #Plot and label stacked bar graph
         new_dataframe.unstack().fillna(0).plot(kind='bar', stacked=True, figsize=(13,9))
         plt.xlabel(self.single_graph_labels_dict["X-Label"])
         plt.ylabel(self.single_graph_labels_dict["Y-Label"])
@@ -188,8 +189,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
     
-    #Build the selected graph
     def build_graph(self):
+        """Build the graph selected on the GUI."""
 
         #If no graph has been selected throw an error box
         if self.single_graph_labels_dict == {}:
