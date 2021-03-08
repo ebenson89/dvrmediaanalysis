@@ -1,16 +1,18 @@
 ''' Analyze movies, etc., recorded on DVRs '''
 
 import json
-from datetime import datetime
-import numpy as np
-import pandas as pd
-from pandas import DataFrame, Series
-import matplotlib.pyplot as plt
 import os
 import sys
+
+from datetime import datetime
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from pandas import DataFrame, Series
+
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIntValidator, QIcon, QPixmap
+from PyQt5.QtWidgets import QLabel, QListWidget, QPushButton
 
 graph_file_name = "graph_skeletons.json"
 media_file_name = "recordings.json"
@@ -18,7 +20,8 @@ qtCreatorFile = "mainwindow.ui" # GUI Design file
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
-    
+    """Takes data from json media file, cleans it up and puts it in a dataframe. Build graphs from the data in the media dataframe."""
+
     def __init__(self):
         """Create the a window that displays all graphs that can be built or updated."""
         QtWidgets.QMainWindow.__init__(self)
@@ -48,7 +51,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.single_graph_labels_dict.update(self.main_graph_dict[graph_name.text()])
 
     def get_data(self, json_file_name):
-        """#Get the data from the json file."""
+        """Get the data from the json file."""
         #Open json file
         with open(json_file_name) as media_file:
             #Returns json obj as a dictionary
