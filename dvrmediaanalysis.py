@@ -7,9 +7,9 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from PyQt5 import QtCore, QtGui, QtWidgets, uic  # C library
-from PyQt5.QtGui import QIcon  # C library
-from PyQt5.QtWidgets import QLabel, QListWidget, QPushButton, QMessageBox  # C library
+from PyQt5 import QtCore, QtGui, QtWidgets, uic  # C library, ignore F401
+from PyQt5.QtGui import QIcon  # C library, ignore F401
+from PyQt5.QtWidgets import QLabel, QListWidget, QPushButton, QMessageBox  # C library, ignore F401
 
 graph_file_name = "graph_skeletons.json"
 media_file_name = "recordings.json"
