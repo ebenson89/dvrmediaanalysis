@@ -4,32 +4,45 @@
         "X-Label": "Duration in half hours",
         "Y-Label": "Number of Shows",
         "DataFrameCall": "self.main_movies_dataframe.value_counts('MediaOriginalRunTime')",
-        "Chart": "Bar"
+        "Chart": "Bar",
+        "Source": "recording.json"
     },
     "Hour Recorded Graph": {
         "Title": "At What Times Are The Shows Recorded, 24 hour clock",
         "X-Label": "Hour Of The Day",
         "Y-Label": "Total Shows Recorded At That Hour",
         "DataFrameCall": "self.main_movies_dataframe.value_counts('RecordedHour').sort_index()",
-        "Chart": "Bar"
+        "Chart": "Bar",
+        "Source": "recording.json"
     },
     "Channels by Total Time": {
         "Title": "Channels by Total Time",
         "DataFrameCall": "self.main_movies_dataframe.groupby('MediaStationCallSign')['MediaOriginalRunTime'].sum().sort_values(ascending = False)",
-        "Chart": "Pie"
+        "Chart": "Pie",
+        "Source": "recording.json"
     },
     "Total Hours Recorded Per Month": {
         "Title": "Total Hours Recorded Per Month",
         "X-Label": "Year, Month",
         "Y-Label": "Total Hours Recorded",
         "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth']])['MediaOriginalRunTime'].sum()",
-        "Chart": "Bar"
+        "Chart": "Bar",
+        "Source": "recording.json"
     },
     "Hours Recorded by Channel Per Month and Year": {
         "Title": "Hours Recorded by Channel Per Month and Year",
         "X-Label": "Year, Month",
         "Y-Label": "Total Hours Recorded",
         "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth'], self.main_movies_dataframe['MediaStationCallSign']])['MediaOriginalRunTime'].sum()",
-        "Chart": "SBar"
+        "Chart": "SBar",
+        "Source": "recording.json"
+    },
+    "Download mega bits per second by date and time": {
+        "Title": "Download mega bits per second by date and time",
+        "X-Label": "Date and Time",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(self.speed_time_dataframe['download']).groups",
+        "Chart": "Scatter",
+        "Source": "speedtest.log"
     }
 }

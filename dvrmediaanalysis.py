@@ -12,6 +12,7 @@ from PyQt5.QtGui import QIcon  # C library, ignore F401
 from PyQt5.QtWidgets import QLabel, QListWidget, QPushButton, QMessageBox  # C library, ignore F401
 
 graph_file_name = "graph_skeletons.json"
+speed_file_name = "speedtest.log"
 media_file_name = "recordings.json"
 qtCreatorFile = "mainwindow.ui"  # GUI Design file
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -25,10 +26,14 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        # Variables
-        self.clean_moviedict = self.cleanup_time(self.remove_list(self.get_data(media_file_name)))
+        # Movies
+        self.clean_moviedict = self.cleanup_time(self.remove_list(self.get_data_json(media_file_name)))
         self.main_movies_dataframe = self.dict_to_dataframe(self.clean_moviedict)
-        self.main_graph_dict = self.get_data(graph_file_name)
+        # Upload times
+        self.speed_time_dict = self.get_data_log(speed_file_name)
+        self.speed_time_dataframe = self.dict_to_dataframe(self.cleanup_speed_times(self.speed_time_dict))
+        # Graph variables
+        self.main_graph_dict = self.get_data_json(graph_file_name)
         self.single_graph_labels_dict = {}
         # Functions
         self.graph_options()
@@ -48,12 +53,26 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         graph_name = self.graph_list.currentItem()
         self.single_graph_labels_dict.update(self.main_graph_dict[graph_name.text()])
 
-    def get_data(self, json_file_name):
-        """Get the data from the json file."""
+    def get_data_json(self, json_file_name):
+        """Put the data from the json file into a dict."""
         # Open json file
         with open(json_file_name) as media_file:
             # Returns json obj as a dictionary
             return json.load(media_file)
+
+    def get_data_log(self, log_file_name):
+        """Put the data from the log file into something that can be turned into a dataframe."""
+        data_dict = {}
+
+        log_file = open(log_file_name, 'r')
+        lines = log_file.read().splitlines()
+        log_file.close()
+
+        for line in lines:
+            json_to_dict = json.loads(line)
+            data_dict.update({json_to_dict["timestamp"]: json_to_dict})
+
+        return data_dict
 
     def remove_list(self, media_dict):
         """Flatten each dictionary entry by replacing the list with the value that was in the list."""
@@ -86,6 +105,38 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
         return months[month_int - 1]
+
+    def cleanup_speed_times(self, speed_time_dict):
+        """Change download and upload from bytes to mega bits. 1 byte / 1,000,000 = 1 MB."""
+        speed_time_updated_dict = {}
+
+        for entry in speed_time_dict:
+            # Copy the entry data dict
+            entry_data_dict = speed_time_dict[entry]
+
+            # Change timestamp string to datetime obj: '2018-06-15T19:25:07.621089Z'
+            fixed_timestamp = entry_data_dict["timestamp"][:10] + ' ' + entry_data_dict["timestamp"][11:]
+            datetime_timestamp = datetime.strptime(fixed_timestamp, "%Y-%m-%d %H:%M:%S.%f%z").astimezone()
+            # Find the date
+            date_timestamp = entry_data_dict["timestamp"][:10]
+            # Update "download" to MB
+            download_MB = float(entry_data_dict["download"]) / 1000000
+            # Update "upload" to MB
+            upload_MB = float(entry_data_dict["upload"]) / 1000000
+
+            # Put the updated time back in the dict
+            entry_data_dict.update({"timestamp": datetime_timestamp})
+            # Put the date in a new column
+            entry_data_dict.update({"date": date_timestamp})
+            # Put the updated download speed back in the dict
+            entry_data_dict.update({"download": download_MB})
+            # Put the updated upload speed back in the dict
+            entry_data_dict.update({"upload": upload_MB})
+
+            # Put the entry into the new datetime dict
+            speed_time_updated_dict.update({entry: entry_data_dict})
+
+        return speed_time_updated_dict
 
     def cleanup_time(self, media_dict):
         """Convert all EncodeTime to a valid datetime object and round the runtimes to nearest half hour."""
@@ -125,7 +176,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def dict_to_dataframe(self, media_dict):
         """Put a dict into a dataframe and transpose it."""
-        return pd.DataFrame(data=media_dict).T
+        new_dataframe = pd.DataFrame(data=media_dict).T
+        # print("New dataframe: ", "\n", new_dataframe)
+        return new_dataframe
 
     def find_all_unique_movies(self, media_dataframe):
         """Return all unique movie titles in dataframe."""
@@ -189,6 +242,19 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
 
+    def scatter_graph(self, new_dataframe, keys):
+        # Find the height of the scatter plot graph data
+        height = self.get_graph_data(new_dataframe, keys)
+        fig = plt.figure()
+        ax = fig.add_axes([0, 0, 1, 1])
+        ax.scatter(keys, height, color='b')
+        ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
+        ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
+        ax.set_title(self.single_graph_labels_dict["Title"])
+        # Save graph
+        self.save_graph(self.single_graph_labels_dict["Title"])
+        plt.show()
+
     def build_graph(self):
         """Build the graph selected on the GUI."""
 
@@ -205,6 +271,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             dataframe_view_string = self.single_graph_labels_dict["DataFrameCall"]
             # Evaluate the dataframe view
             new_dataframe = eval(dataframe_view_string)
+            # Debug
+            print("Dataframe in use: ", "\n", new_dataframe)
 
             # Get all the keys in the dataframe
             keys = new_dataframe.keys()
@@ -216,8 +284,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 # Build pie graph
                 self.pie_graph(new_dataframe, keys)
             elif self.single_graph_labels_dict["Chart"] == "SBar":
-                # Build pie graph
+                # Build stacked bar graph
                 self.stacked_bar_graph(new_dataframe, keys)
+            elif self.single_graph_labels_dict["Chart"] == "Scatter":
+                # Build line graph
+                self.scatter_graph(new_dataframe, keys)
             else:
                 # Should never reach here
                 pass
