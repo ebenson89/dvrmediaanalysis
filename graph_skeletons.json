@@ -41,7 +41,7 @@
         "Title": "Download mega bits per second by date and time",
         "X-Label": "Date and Time",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(self.speed_time_dataframe['download']).groups",
+        "DataFrameCall": "self.speed_time_dataframe.get(['download'])",
         "Chart": "Scatter",
         "Source": "speedtest.log"
     }
