@@ -124,6 +124,14 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Update "upload" to MB
             upload_MB = float(entry_data_dict["upload"]) / 1000000
 
+            # Check data type
+            if isinstance(download_MB, float) is False:
+                print("Error in this dict: ", entry_data_dict)
+                quit()
+            if isinstance(upload_MB, float) is False:
+                print("Error in this dict: ", entry_data_dict)
+                quit()
+
             # Put the updated time back in the dict
             entry_data_dict.update({"timestamp": datetime_timestamp})
             # Put the date in a new column
@@ -273,7 +281,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Evaluate the dataframe view
             new_dataframe = eval(dataframe_view_string)
             # Debug
-            print("Dataframe in use: ", "\n", new_dataframe)
+            # print("Dataframe in use: ", "\n", new_dataframe)
 
             # Get all the keys in the dataframe
             keys = new_dataframe.keys()
