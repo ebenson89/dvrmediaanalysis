@@ -31,7 +31,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.main_movies_dataframe = self.dict_to_dataframe(self.clean_moviedict)
         # Upload times
         self.speed_time_dict = self.get_data_log(speed_file_name)
-        self.speed_time_dataframe = self.dict_to_dataframe(self.cleanup_speed_times(self.speed_time_dict))
+        self.speed_time_dataframe = self.set_types(self.dict_to_dataframe(self.cleanup_speed_times(self.speed_time_dict)))
         # Graph variables
         self.main_graph_dict = self.get_data_json(graph_file_name)
         self.single_graph_labels_dict = {}
@@ -187,6 +187,15 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         new_dataframe = pd.DataFrame(data=media_dict).T
         # print("New dataframe: ", "\n", new_dataframe)
         return new_dataframe
+
+    def set_types(self, speed_dataframe):
+        '''Change the column types from object to numeric'''
+        if "download" in speed_dataframe:
+            speed_dataframe = speed_dataframe.astype(dtype={"download":"float64"})
+        if "upload" in speed_dataframe:
+            speed_dataframe = speed_dataframe.astype(dtype={"upload":"float64"})
+
+        return speed_dataframe
 
     def find_all_unique_movies(self, media_dataframe):
         """Return all unique movie titles in dataframe."""

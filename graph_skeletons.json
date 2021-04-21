@@ -37,11 +37,11 @@
         "Chart": "SBar",
         "Source": "recording.json"
     },
-    "Max download speed, mega bits per second by date": {
-        "Title": "Max download speed, mega bits per second by date",
+    "Average download speed, mega bits per second by date": {
+        "Title": "Average download speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=['date'])['download'].max()",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(by=['date'])['download'].mean()",
         "Chart": "Scatter",
         "Source": "speedtest.log"
     }
