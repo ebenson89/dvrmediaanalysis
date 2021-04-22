@@ -191,9 +191,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def set_types(self, speed_dataframe):
         '''Change the column types from object to numeric'''
         if "download" in speed_dataframe:
-            speed_dataframe = speed_dataframe.astype(dtype={"download":"float64"})
+            speed_dataframe = speed_dataframe.astype(dtype={"download": "float64"})
         if "upload" in speed_dataframe:
-            speed_dataframe = speed_dataframe.astype(dtype={"upload":"float64"})
+            speed_dataframe = speed_dataframe.astype(dtype={"upload": "float64"})
 
         return speed_dataframe
 
@@ -218,41 +218,38 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def bar_graph(self, new_dataframe, keys):
         """Build a bar graph."""
-        # Find the height of the bar graph data
-        height = self.get_graph_data(new_dataframe, keys)
-        # Print Bar chart, bar(x-axis, height)
-        plt.figure(figsize=(7, 8))
-        plt.bar(range(len(height)), height)
-        plt.xticks(range(len(height)), keys)
-        plt.xticks(rotation=90)
-        plt.xlabel(self.single_graph_labels_dict["X-Label"])
-        plt.ylabel(self.single_graph_labels_dict["Y-Label"])
-        plt.title(self.single_graph_labels_dict["Title"])
+        # Plot and label bar graph
+        new_dataframe.fillna(0).plot(
+            kind='bar', figsize=(7, 8),
+            title=self.single_graph_labels_dict["Title"],
+            xlabel=self.single_graph_labels_dict["X-Label"],
+            ylabel=self.single_graph_labels_dict["Y-Label"])
+
         # Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
 
     def pie_graph(self, new_dataframe, keys):
         """Build a pie graph."""
-        # Find the size of the bar graph data
-        size = self.get_graph_data(new_dataframe, keys)
-        # Print Pie chart, pie(size, lables)
-        plt.figure(figsize=(8, 6))
-        plt.pie(size, autopct='%1.1f%%')
-        patches, _ = plt.pie(size)
-        plt.legend(patches, keys, bbox_to_anchor=(1, 1), loc="upper left")
-        plt.title(self.single_graph_labels_dict["Title"])
+        # Plot and label pie graph
+        new_dataframe.fillna(0).plot(
+            kind='pie', figsize=(9, 7),
+            title=self.single_graph_labels_dict["Title"])
+
+        plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
         # Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
 
-    def stacked_bar_graph(self, new_dataframe, keys):
+    def stacked_bar_graph(self, new_dataframe):
         """Build a stacked bar graph."""
         # Plot and label stacked bar graph
-        new_dataframe.unstack().fillna(0).plot(kind='bar', stacked=True, figsize=(13, 9))
-        plt.xlabel(self.single_graph_labels_dict["X-Label"])
-        plt.ylabel(self.single_graph_labels_dict["Y-Label"])
-        plt.title(self.single_graph_labels_dict["Title"])
+        new_dataframe.unstack().fillna(0).plot(
+            kind='bar', stacked=True, figsize=(13, 9),
+            title=self.single_graph_labels_dict["Title"],
+            xlabel=self.single_graph_labels_dict["X-Label"],
+            ylabel=self.single_graph_labels_dict["Y-Label"])
+
         plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
 
         # Save graph
@@ -303,7 +300,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.pie_graph(new_dataframe, keys)
             elif self.single_graph_labels_dict["Chart"] == "SBar":
                 # Build stacked bar graph
-                self.stacked_bar_graph(new_dataframe, keys)
+                self.stacked_bar_graph(new_dataframe)
             elif self.single_graph_labels_dict["Chart"] == "Scatter":
                 # Build line graph
                 self.scatter_graph(new_dataframe, keys)
