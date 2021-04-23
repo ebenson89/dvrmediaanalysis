@@ -216,7 +216,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         graph_file_name = "Saved Graphs\\" + Title + ".jpg"
         plt.savefig(graph_file_name, format="jpg")
 
-    def bar_graph(self, new_dataframe, keys):
+    def bar_graph(self, new_dataframe):
         """Build a bar graph."""
         # Plot and label bar graph
         new_dataframe.fillna(0).plot(
@@ -229,7 +229,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
 
-    def pie_graph(self, new_dataframe, keys):
+    def pie_graph(self, new_dataframe):
         """Build a pie graph."""
         # Plot and label pie graph
         new_dataframe.fillna(0).plot(
@@ -260,7 +260,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Build a scatter plot graph."""
         # Find the height of the scatter plot graph data
         height = self.get_graph_data(new_dataframe, keys)
-        fig = plt.figure()
+        fig = plt.figure(figsize=(13, 9))
         ax = fig.add_axes([0, 0, 1, 1])
         ax.scatter(keys, height)
         ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
@@ -294,10 +294,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             if self.single_graph_labels_dict["Chart"] == "Bar":
                 # Build bar graph
-                self.bar_graph(new_dataframe, keys)
+                self.bar_graph(new_dataframe)
             elif self.single_graph_labels_dict["Chart"] == "Pie":
                 # Build pie graph
-                self.pie_graph(new_dataframe, keys)
+                self.pie_graph(new_dataframe)
             elif self.single_graph_labels_dict["Chart"] == "SBar":
                 # Build stacked bar graph
                 self.stacked_bar_graph(new_dataframe)

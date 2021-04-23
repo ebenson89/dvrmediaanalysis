@@ -44,5 +44,13 @@
         "DataFrameCall": "self.speed_time_dataframe.groupby(by=['date'])['download'].mean()",
         "Chart": "Scatter",
         "Source": "speedtest.log"
+    },
+    "Average upload speed, mega bits per second by date": {
+        "Title": "Average upload speed, mega bits per second by date",
+        "X-Label": "Date",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(by=['date'])['upload'].mean()",
+        "Chart": "Scatter",
+        "Source": "speedtest.log"
     }
 }
