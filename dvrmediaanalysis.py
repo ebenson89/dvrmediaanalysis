@@ -258,14 +258,20 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def scatter_graph(self, new_dataframe, keys):
         """Build a scatter plot graph."""
+        new_dataframe.plot(
+            kind='scatter', figsize=(13, 9),
+            title=self.single_graph_labels_dict["Title"],
+            xlabel=self.single_graph_labels_dict["X-Label"],
+            ylabel=self.single_graph_labels_dict["Y-Label"])
+
         # Find the height of the scatter plot graph data
-        height = self.get_graph_data(new_dataframe, keys)
-        fig = plt.figure(figsize=(13, 9))
-        ax = fig.add_axes([0, 0, 1, 1])
-        ax.scatter(keys, height)
-        ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
-        ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
-        ax.set_title(self.single_graph_labels_dict["Title"])
+        # height = self.get_graph_data(new_dataframe, keys)
+        # fig = plt.figure(figsize=(13, 9))
+        # ax = fig.add_axes([0, 0, 1, 1])
+        # ax.scatter(keys, height)
+        # ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
+        # ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
+        # ax.set_title(self.single_graph_labels_dict["Title"])
         # Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
