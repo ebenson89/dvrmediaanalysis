@@ -42,20 +42,38 @@
         "MultiIndex": true,
         "Source": "recording.json"
     },
-    "Average download speed, mega bits per second by date": {
+    "Average download speed, mega bits per second by Year, Month": {
+        "Title": "Average download speed, mega bits per second by Month, Year",
+        "X-Label": "Month, Year",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(by=[self.speed_time_dataframe['year'], self.speed_time_dataframe['month']])['download'].mean()",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "speedtest.log"
+    },
+    "Average upload speed, mega bits per second by Year, Month": {
+        "Title": "Average upload speed, mega bits per second by Month, Year",
+        "X-Label": "Month, Year",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(by=[self.speed_time_dataframe['year'], self.speed_time_dataframe['month']])['upload'].mean()",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "speedtest.log"
+    },
+    "Average download speed, mega bits per second by day": {
         "Title": "Average download speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=['date'])['download'].mean()",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(by=self.speed_time_dataframe['date'])['download'].mean()",
         "Chart": "Scatter",
         "MultiIndex": false,
         "Source": "speedtest.log"
     },
-    "Average upload speed, mega bits per second by date": {
+    "Average upload speed, mega bits per second by day": {
         "Title": "Average upload speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=['date'])['upload'].mean()",
+        "DataFrameCall": "self.speed_time_dataframe.groupby(by=self.speed_time_dataframe['date'])['upload'].mean()",
         "Chart": "Scatter",
         "MultiIndex": false,
         "Source": "speedtest.log"

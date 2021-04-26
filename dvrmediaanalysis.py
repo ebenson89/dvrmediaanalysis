@@ -118,7 +118,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             fixed_timestamp = entry_data_dict["timestamp"][:10] + ' ' + entry_data_dict["timestamp"][11:]
             datetime_timestamp = datetime.strptime(fixed_timestamp, "%Y-%m-%d %H:%M:%S.%f%z").astimezone()
             # Find the date
-            date_timestamp = entry_data_dict["timestamp"][:10]
+            date_timestamp_string = entry_data_dict["timestamp"][:10]
+            # Find the month that the entry was logged
+            log_month = datetime_timestamp.month
+            # Find the year that the entry was logged
+            log_year = datetime_timestamp.year
             # Update "download" to MB
             download_MB = float(entry_data_dict["download"]) / 1000000
             # Update "upload" to MB
@@ -133,9 +137,13 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 quit()
 
             # Put the updated time back in the dict
-            entry_data_dict.update({"timestamp": datetime_timestamp})
+            entry_data_dict.update({"timestamp": date_timestamp_string})
             # Put the date in a new column
-            entry_data_dict.update({"date": date_timestamp})
+            entry_data_dict.update({"date": date_timestamp_string})
+            # Add year that entry was logged to the dict
+            entry_data_dict.update({"year": log_year})
+            # Add month that entry was logged to the dict
+            entry_data_dict.update({"month": log_month})
             # Put the updated download speed back in the dict
             entry_data_dict.update({"download": download_MB})
             # Put the updated upload speed back in the dict
@@ -185,6 +193,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def dict_to_dataframe(self, media_dict):
         """Put a dict into a dataframe and transpose it."""
         new_dataframe = pd.DataFrame(data=media_dict).T
+        # print("Type: ", type(new_dataframe))
         # print("New dataframe: ", "\n", new_dataframe)
         return new_dataframe
 
@@ -258,20 +267,22 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def scatter_graph(self, new_dataframe, keys):
         """Build a scatter plot graph."""
-        new_dataframe.plot(
-            kind='scatter', figsize=(13, 9),
-            title=self.single_graph_labels_dict["Title"],
-            xlabel=self.single_graph_labels_dict["X-Label"],
-            ylabel=self.single_graph_labels_dict["Y-Label"])
+        # In progress prototype
+        # new_dataframe.fillna(0).plot(
+            # kind='scatter', figsize=(13, 9),
+            # title=self.single_graph_labels_dict["Title"],
+            # xlabel=self.single_graph_labels_dict["X-Label"],
+            # ylabel=self.single_graph_labels_dict["Y-Label"])
 
+        # Working function to be refactored
         # Find the height of the scatter plot graph data
-        # height = self.get_graph_data(new_dataframe, keys)
-        # fig = plt.figure(figsize=(13, 9))
-        # ax = fig.add_axes([0, 0, 1, 1])
-        # ax.scatter(keys, height)
-        # ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
-        # ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
-        # ax.set_title(self.single_graph_labels_dict["Title"])
+        height = self.get_graph_data(new_dataframe, keys)
+        fig = plt.figure(figsize=(13, 9))
+        ax = fig.add_axes([0, 0, 1, 1])
+        ax.scatter(keys, height)
+        ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
+        ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
+        ax.set_title(self.single_graph_labels_dict["Title"])
         # Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
@@ -293,7 +304,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Evaluate the dataframe view
             new_dataframe = eval(dataframe_view_string)
             # Debug
-            # print("Dataframe in use: ", "\n", new_dataframe)
+            print("Type: ", type(new_dataframe))
+            print("Object in use: ", "\n", new_dataframe)
 
             # Get all the keys in the dataframe
             keys = new_dataframe.keys()
