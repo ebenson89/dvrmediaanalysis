@@ -64,7 +64,9 @@
         "Title": "Average download speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=self.speed_time_dataframe['date'])['download'].mean()",
+        "DataFrameCall": "self.speed_time_dataframe",
+        "X-Axis": "date",
+        "Y-Axis": "download",
         "Chart": "Scatter",
         "MultiIndex": false,
         "Source": "speedtest.log"
@@ -73,7 +75,9 @@
         "Title": "Average upload speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=self.speed_time_dataframe['date'])['upload'].mean()",
+        "DataFrameCall": "self.speed_time_dataframe",
+        "X-Axis": "date",
+        "Y-Axis": "upload",
         "Chart": "Scatter",
         "MultiIndex": false,
         "Source": "speedtest.log"

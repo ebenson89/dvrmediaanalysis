@@ -34,7 +34,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.speed_time_dataframe = self.set_types(self.dict_to_dataframe(self.cleanup_speed_times(self.speed_time_dict)))
         # Graph variables
         self.main_graph_dict = self.get_data_json(graph_file_name)
-        self.single_graph_labels_dict = {}
+        self.single_graph_labels_dict = {} # All of the variables from the graph skeleton is in here.
         # Functions
         self.graph_options()
         self.build_graph_button.clicked.connect(self.build_graph)
@@ -210,16 +210,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Return all unique movie titles in dataframe."""
         return media_dataframe.drop_duplicates(subset=['Title'])
 
-    def get_graph_data(self, dataframe, keys_dataframe):
-        """Return the data for the graph."""
-        data = []
-
-        # Pull the data out of the dataframe
-        for key in keys_dataframe:
-            data.append(dataframe[key])
-
-        return data
-
     def save_graph(self, Title):
         """Save created graph."""
         graph_file_name = "Saved Graphs\\" + Title + ".jpg"
@@ -267,22 +257,11 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def scatter_graph(self, new_dataframe, keys):
         """Build a scatter plot graph."""
-        # In progress prototype
-        # new_dataframe.fillna(0).plot(
-            # kind='scatter', figsize=(13, 9),
-            # title=self.single_graph_labels_dict["Title"],
-            # xlabel=self.single_graph_labels_dict["X-Label"],
-            # ylabel=self.single_graph_labels_dict["Y-Label"])
-
-        # Working function to be refactored
-        # Find the height of the scatter plot graph data
-        height = self.get_graph_data(new_dataframe, keys)
-        fig = plt.figure(figsize=(13, 9))
-        ax = fig.add_axes([0, 0, 1, 1])
-        ax.scatter(keys, height)
+        ax = new_dataframe.plot.scatter(x=self.single_graph_labels_dict["X-Axis"], y=self.single_graph_labels_dict["Y-Axis"])
         ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
         ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
         ax.set_title(self.single_graph_labels_dict["Title"])
+
         # Save graph
         self.save_graph(self.single_graph_labels_dict["Title"])
         plt.show()
@@ -304,8 +283,8 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Evaluate the dataframe view
             new_dataframe = eval(dataframe_view_string)
             # Debug
-            print("Type: ", type(new_dataframe))
-            print("Object in use: ", "\n", new_dataframe)
+            # print("Type: ", type(new_dataframe))
+            # print("Object in use: ", "\n", new_dataframe)
 
             # Get all the keys in the dataframe
             keys = new_dataframe.keys()
