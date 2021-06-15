@@ -261,7 +261,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def scatter_graph(self, new_dataframe, keys):
         """Build a scatter plot graph."""
-        ax = new_dataframe.plot.scatter(x=self.single_graph_labels_dict["X-Axis"], y=self.single_graph_labels_dict["Y-Axis"], figsize=(13, 7), rot=50)
+        ax = new_dataframe.plot(x=self.single_graph_labels_dict["X-Axis"], y=self.single_graph_labels_dict["Y-Axis"], style='o', figsize=(13, 7))
         ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
         ax.set_ylabel(self.single_graph_labels_dict["Y-Label"])
         ax.set_title(self.single_graph_labels_dict["Title"])
