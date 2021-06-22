@@ -211,10 +211,17 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         """Return all unique movie titles in dataframe."""
         return media_dataframe.drop_duplicates(subset=['Title'])
 
-    def save_graph(self, Title):
+    def save_graph(self, Title, Source):
         """Save created graph."""
-        graph_file_name = "Saved Graphs\\" + Title + ".jpg"
-        plt.savefig(graph_file_name, format="jpg")
+        if Source == "recordings.json":
+            graph_file_name = "Saved Graphs\\" + "Media\\" + Title + ".jpg"
+            plt.savefig(graph_file_name, format="jpg")
+        elif Source == "speedtest.log":
+            graph_file_name = "Saved Graphs\\" + "Speed\\" + Title + ".jpg"
+            plt.savefig(graph_file_name, format="jpg")
+        else:
+            print("graph not saved")
+            quit()
 
     def bar_graph(self, new_dataframe):
         """Build a bar graph."""
@@ -228,7 +235,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Show graph
         plt.show()
         # Save graph
-        self.save_graph(self.single_graph_labels_dict["Title"])
+        self.save_graph(self.single_graph_labels_dict["Title"], self.single_graph_labels_dict["Source"])
 
     def pie_graph(self, new_dataframe):
         """Build a pie graph."""
@@ -241,7 +248,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Show graph
         plt.show()
         # Save graph
-        self.save_graph(self.single_graph_labels_dict["Title"])
+        self.save_graph(self.single_graph_labels_dict["Title"], self.single_graph_labels_dict["Source"])
 
     def stacked_bar_graph(self, new_dataframe):
         """Build a stacked bar graph."""
@@ -257,9 +264,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Show graph
         plt.show()
         # Save graph
-        self.save_graph(self.single_graph_labels_dict["Title"])
+        self.save_graph(self.single_graph_labels_dict["Title"], self.single_graph_labels_dict["Source"])
 
-    def scatter_graph(self, new_dataframe, keys):
+    def scatter_graph(self, new_dataframe):
         """Build a scatter plot graph."""
         ax = new_dataframe.plot(x=self.single_graph_labels_dict["X-Axis"], y=self.single_graph_labels_dict["Y-Axis"], style='o', figsize=(13, 7))
         ax.set_xlabel(self.single_graph_labels_dict["X-Label"])
@@ -269,7 +276,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Show graph
         plt.show()
         # Save graph
-        self.save_graph(self.single_graph_labels_dict["Title"])
+        self.save_graph(self.single_graph_labels_dict["Title"], self.single_graph_labels_dict["Source"])
 
     def build_graph(self):
         """Build the graph selected on the GUI."""
@@ -292,7 +299,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # print("Object in use: ", "\n", new_dataframe)
 
             # Get all the keys in the dataframe
-            keys = new_dataframe.keys()
+            # keys = new_dataframe.keys()
 
             if self.single_graph_labels_dict["Chart"] == "Bar":
                 # Build bar graph
@@ -305,7 +312,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.stacked_bar_graph(new_dataframe)
             elif self.single_graph_labels_dict["Chart"] == "Scatter":
                 # Build line graph
-                self.scatter_graph(new_dataframe, keys)
+                self.scatter_graph(new_dataframe)
             else:
                 # Should never reach here
                 pass
