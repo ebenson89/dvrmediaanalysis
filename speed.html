@@ -6,10 +6,38 @@
 <body>
 <a href="/"><button>Home</button></a>
 <br>
+<form class="spec-table" name="dropdown">
+    <tr>
+      <td>
+        <input type="hidden" name="on0" value="This is my drop down" />
+        Choose a graph
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <select name="selected" id="target" accesskey="E" class="spec-field1">
+          <option selected value="/speed/Average download speed, mega bits per second by date.jpg">Average download speed, mega bits per second by date</option>
+          <option value ="/speed/Average download speed, mega bits per second by Month, Year.jpg">Average download speed, mega bits per second by Month, Year</option>
+          <option value ="/speed/Average upload speed, mega bits per second by date.jpg">Average upload speed, mega bits per second by date</option>
+          <option value ="/speed/Average upload speed, mega bits per second by Month, Year.jpg">Average upload speed, mega bits per second by Month, Year</option>
+        </select>
+      </td>
+    </tr>
+    <input type="button" class="button-spec" value="Visit Link!"
+           onclick="goToNewPage(document.dropdown.selected)">
+  </form>
+  <br>
 %for graph in speed:
     <a href="{{graph}}">
         <img src="{{graph}}">
     </a>
 %end
+<script>
+    function goToNewPage() {
+    if(document.getElementById('target').value) {
+        window.location.href = document.getElementById('target').value;
+    }
+    }
+    </script>
 </body>
 </html>
