@@ -70,7 +70,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         log_file.close()
 
         for line in lines:
-            json_to_dict = json.loads(line)
+            try:
+                json_to_dict = json.loads(line)
+            except:  # Ignore flake8(E722) No impact on function
+                print("Bad entry in source file:", line)
             data_dict.update({json_to_dict["timestamp"]: json_to_dict})
 
         return data_dict
