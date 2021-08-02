@@ -12,7 +12,8 @@ from PyQt5.QtGui import QIcon  # C library, ignore F401
 from PyQt5.QtWidgets import QLabel, QListWidget, QPushButton, QMessageBox  # C library, ignore F401
 
 graph_file_name = "graph_skeletons.json"
-speed_file_name = "speedtest.log"
+cable_speed_file_name = "speedtest_cable.log"
+satellite_speed_file_name = "speedtest_satellite.log"
 media_file_name = "recordings.json"
 qtCreatorFile = "mainwindow.ui"  # GUI Design file
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
@@ -29,12 +30,15 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Movies
         self.clean_moviedict = self.cleanup_time(self.remove_list(self.get_data_json(media_file_name)))
         self.main_movies_dataframe = self.dict_to_dataframe(self.clean_moviedict)
-        # Upload times
-        self.speed_time_dict = self.get_data_log(speed_file_name)
-        self.speed_time_dataframe = self.set_types(self.dict_to_dataframe(self.cleanup_speed_times(self.speed_time_dict)))
+        # Cable speed times
+        self.cable_speed_time_dict = self.get_data_log(cable_speed_file_name, "Comcast Cable")
+        self.cable_speed_time_dataframe = self.set_types(self.dict_to_dataframe(self.cleanup_speed_times(self.cable_speed_time_dict)))
+        # Satellite speed times
+        self.satellite_speed_time_dict = self.get_data_log(satellite_speed_file_name, "Starlink")
+        self.satellite_speed_time_dataframe = self.set_types(self.dict_to_dataframe(self.cleanup_speed_times(self.satellite_speed_time_dict)))
         # Graph variables
         self.main_graph_dict = self.get_data_json(graph_file_name)
-        self.single_graph_labels_dict = {}  # All of the variables from the graph skeleton is in here.
+        self.single_graph_labels_dict = {}  # All of the variables from the graph skeleton are in here.
         # Functions
         self.graph_options()
         self.build_graph_button.clicked.connect(self.build_graph)
@@ -61,7 +65,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Returns json obj as a dictionary
             return json.load(media_file)
 
-    def get_data_log(self, log_file_name):
+    def get_data_log(self, log_file_name, source):
         """Put the data from the log file into something that can be turned into a dataframe."""
         data_dict = {}
 
@@ -70,12 +74,18 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         log_file.close()
 
         for line in lines:
+            # Check for bad entries
             try:
                 json_to_dict = json.loads(line)
             except:  # Ignore flake8(E722) No impact on function
                 print("Bad entry in source file:", line)
-            data_dict.update({json_to_dict["timestamp"]: json_to_dict})
 
+            # Only take the entries from the selected source
+            if json_to_dict["client"]["isp"] == source:
+                tag = json_to_dict["client"]["isp"] + "|" + json_to_dict["timestamp"]
+                data_dict.update({tag: json_to_dict})
+
+        print(source, ":", data_dict)
         return data_dict
 
     def remove_list(self, media_dict):
@@ -152,6 +162,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             entry_data_dict.update({"download": download_MB})
             # Put the updated upload speed back in the dict
             entry_data_dict.update({"upload": upload_MB})
+            # Put the ISP Source in the dict
+            source = entry_data_dict["client"]["isp"]
+            entry_data_dict.update({"source": source})
 
             # Put the entry into the new datetime dict
             speed_time_updated_dict.update({entry: entry_data_dict})
