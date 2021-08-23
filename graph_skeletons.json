@@ -46,7 +46,10 @@
         "Title": "Average download speed, mega bits per second by Month, Year",
         "X-Label": "Month, Year",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=[self.speed_time_dataframe['year'], self.speed_time_dataframe['month']])['download'].mean()",
+        "DataFrameCall": {
+            "CableSet": "self.cable_speed_time_dataframe.groupby(by=[self.cable_speed_time_dataframe['year'], self.cable_speed_time_dataframe['month']])['download'].mean()",
+            "SatelliteSet" : "self.satellite_speed_time_dataframe.groupby(by=[self.satellite_speed_time_dataframe['year'], self.satellite_speed_time_dataframe['month']])['download'].mean()"
+        },
         "Chart": "Bar",
         "MultiIndex": false,
         "Source": "speedtest.log"
@@ -55,7 +58,10 @@
         "Title": "Average upload speed, mega bits per second by Month, Year",
         "X-Label": "Month, Year",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe.groupby(by=[self.speed_time_dataframe['year'], self.speed_time_dataframe['month']])['upload'].mean()",
+        "DataFrameCall": {
+            "CableSet" : "self.cable_speed_time_dataframe.groupby(by=[self.cable_speed_time_dataframe['year'], self.cable_speed_time_dataframe['month']])['upload'].mean()",
+            "SatelliteSet" : "self.satellite_speed_time_dataframe.groupby(by=[self.satellite_speed_time_dataframe['year'], self.satellite_speed_time_dataframe['month']])['upload'].mean()"
+        },
         "Chart": "Bar",
         "MultiIndex": false,
         "Source": "speedtest.log"
@@ -64,7 +70,10 @@
         "Title": "Average download speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe",
+        "DataFrameCall": {
+            "CableSet" : "self.cable_speed_time_dataframe",
+            "SatelliteSet" : "self.satellite_speed_time_dataframe"
+        },
         "X-Axis": "date",
         "Y-Axis": "download",
         "Chart": "Scatter",
@@ -75,7 +84,10 @@
         "Title": "Average upload speed, mega bits per second by date",
         "X-Label": "Date",
         "Y-Label": "MBs per second",
-        "DataFrameCall": "self.speed_time_dataframe",
+        "DataFrameCall": {
+            "CableSet" : "self.cable_speed_time_dataframe",
+            "SatelliteSet" : "self.satellite_speed_time_dataframe"
+        },
         "X-Axis": "date",
         "Y-Axis": "upload",
         "Chart": "Scatter",
