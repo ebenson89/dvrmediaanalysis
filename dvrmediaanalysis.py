@@ -42,7 +42,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Functions
         self.graph_options()
         self.build_graph_button.clicked.connect(self.build_graph)
-        self.build_all_graphs_button.clicked.connect(self.build_all_graphs)
         self.graph_list.clicked.connect(self.choose_graph)
 
     def graph_options(self):
@@ -360,16 +359,6 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 # Should never reach here
                 pass
-
-    def build_all_graphs(self):
-        """Build all graphs"""
-        # print("Graph skeletons: ", self.main_graph_dict)
-        #for graph_name in self.main_graph_dict:
-            #print("Current graph: ", graph_name)
-            #self.single_graph_labels_dict.update(self.main_graph_dict[graph_name])
-            #print("Data for the current graph: ", self.single_graph_labels_dict)
-            #self.build_graph()
-            #self.single_graph_labels_dict = {}
 
 
 # This little chunk of code allows this python program to be either used directly or imported into another program
