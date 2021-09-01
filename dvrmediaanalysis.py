@@ -239,27 +239,14 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             print("graph not saved")
             quit()
 
-    def bar_graph(self, data_set_list):
+    def bar_graph(self, new_dataframe):
         """Build a bar graph."""
         # Plot and label bar graph
-        # new_dataframe.fillna(0).plot(
-        #     kind='bar', figsize=(7, 9),
-        #     title=self.single_graph_labels_dict["Title"],
-        #     xlabel=self.single_graph_labels_dict["X-Label"],
-        #     ylabel=self.single_graph_labels_dict["Y-Label"])
-
-        plt.figure(figsize=(7, 9))
-        # Plot the datasets
-        for dataset_key in data_set_list:
-            print("key:", dataset_key)
-            dataset_value = data_set_list[dataset_key]
-            print("key:", dataset_value)
-            dataset_value.fillna(0).plot(kind='bar')
-
-        # Labels
-        plt.xlabel(self.single_graph_labels_dict["X-Label"])
-        plt.ylabel(self.single_graph_labels_dict["Y-Label"])
-        plt.title(self.single_graph_labels_dict["Title"])
+        new_dataframe.fillna(0).plot(
+            kind='bar', figsize=(7, 9),
+            title=self.single_graph_labels_dict["Title"],
+            xlabel=self.single_graph_labels_dict["X-Label"],
+            ylabel=self.single_graph_labels_dict["Y-Label"])
 
         # Show graph
         plt.show()
@@ -295,16 +282,9 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Save graph
         self.save_graph(self.single_graph_labels_dict["Title"], self.single_graph_labels_dict["Source"])
 
-    def scatter_graph(self, data_set_list):
+    def scatter_graph(self, dataset):
         """Build a scatter plot graph."""
-        plt.figure(figsize=(13, 7))
-        # Plot the datasets
-        for dataset in data_set_list:
-            # Past implementation for a single data set
-            # ax = dataset.plot(x=self.single_graph_labels_dict["X-Axis"], y=self.single_graph_labels_dict["Y-Axis"], style='o', figsize=(13, 7))
-            x = dataset[self.single_graph_labels_dict["X-Axis"]]
-            y = dataset[self.single_graph_labels_dict["Y-Axis"]]
-            plt.plot(x, y)
+        ax = dataset.plot(x=self.single_graph_labels_dict["X-Axis"], y=self.single_graph_labels_dict["Y-Axis"], style='o', figsize=(13, 7))
 
         # Labels
         plt.xlabel(self.single_graph_labels_dict["X-Label"])
@@ -328,21 +308,12 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msgBox.exec()
 
         else:
-            # Find the dataframe view string
-            data_set_list = []
-
-            for dataframe_view_string in self.single_graph_labels_dict["DataFrameCall"]:
-                datafame_call_string = self.single_graph_labels_dict["DataFrameCall"][dataframe_view_string]
-                # Evaluate the dataframe view
-                new_dataframe = eval(datafame_call_string)
-                data_set_list.append(new_dataframe)
+            # Evaluate the dataframe view
+            new_dataframe = eval(self.single_graph_labels_dict["DataFrameCall"])
 
             # Debug
             # print("Type: ", type(new_dataframe))
             # print("Object in use: ", "\n", new_dataframe)
-
-            # Get all the keys in the dataframe
-            # keys = new_dataframe.keys()
 
             if self.single_graph_labels_dict["Chart"] == "Bar":
                 # Build bar graph
@@ -355,9 +326,10 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.stacked_bar_graph(new_dataframe)
             elif self.single_graph_labels_dict["Chart"] == "Scatter":
                 # Build line graph
-                self.scatter_graph(data_set_list)
+                self.scatter_graph(new_dataframe)
             else:
                 # Should never reach here
+                print("No graph assigned")
                 pass
 
 
