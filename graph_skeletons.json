@@ -1,0 +1,85 @@
+{
+    "Show Duration Graph": {
+        "Title": "How many shows are watched with a given duration",
+        "X-Label": "Duration in half hours",
+        "Y-Label": "Number of Shows",
+        "DataFrameCall": "self.main_movies_dataframe.value_counts('MediaOriginalRunTime')",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "recordings.json"
+    },
+    "Hour Recorded Graph": {
+        "Title": "At What Times Are The Shows Recorded, 24 hour clock",
+        "X-Label": "Hour Of The Day",
+        "Y-Label": "Total Shows Recorded At That Hour",
+        "DataFrameCall": "self.main_movies_dataframe.value_counts('RecordedHour').sort_index()",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "recordings.json"
+    },
+    "Channels by Total Time": {
+        "Title": "Channels by Total Time",
+        "DataFrameCall": "self.main_movies_dataframe.groupby('MediaStationCallSign')['MediaOriginalRunTime'].sum().sort_values(ascending = False)",
+        "Chart": "Pie",
+        "MultiIndex": false,
+        "Source": "recordings.json"
+    },
+    "Total Hours Recorded Per Month": {
+        "Title": "Total Hours Recorded Per Month",
+        "X-Label": "Year, Month",
+        "Y-Label": "Total Hours Recorded",
+        "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth']])['MediaOriginalRunTime'].sum()",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "recordings.json"
+    },
+    "Hours Recorded by Channel Per Month and Year": {
+        "Title": "Hours Recorded by Channel Per Month and Year",
+        "X-Label": "Year, Month",
+        "Y-Label": "Total Hours Recorded",
+        "DataFrameCall": "self.main_movies_dataframe.groupby(by=[self.main_movies_dataframe['RecordedYear'], self.main_movies_dataframe['RecordedMonth'], self.main_movies_dataframe['MediaStationCallSign']])['MediaOriginalRunTime'].sum()",
+        "Chart": "SBar",
+        "MultiIndex": true,
+        "Source": "recordings.json"
+    },
+    "Average download speed, mega bits per second by Year, Month": {
+        "Title": "Average download speed, mega bits per second by Month, Year",
+        "X-Label": "Month, Year",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.cable_speed_time_dataframe.groupby(by=[self.cable_speed_time_dataframe['year'], self.cable_speed_time_dataframe['month']])['download'].mean()",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "speedtest.log"
+    },
+    "Average upload speed, mega bits per second by Year, Month": {
+        "Title": "Average upload speed, mega bits per second by Month, Year",
+        "X-Label": "Month, Year",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.cable_speed_time_dataframe.groupby(by=[self.cable_speed_time_dataframe['year'], self.cable_speed_time_dataframe['month']])['upload'].mean()",
+        "Chart": "Bar",
+        "MultiIndex": false,
+        "Source": "speedtest.log"
+    },
+    "Average download speed, mega bits per second by day": {
+        "Title": "Average download speed, mega bits per second by date",
+        "X-Label": "Date",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.cable_speed_time_dataframe",
+        "X-Axis": "date",
+        "Y-Axis": "download",
+        "Chart": "Scatter",
+        "MultiIndex": false,
+        "Source": "speedtest.log"
+    },
+    "Average upload speed, mega bits per second by day": {
+        "Title": "Average upload speed, mega bits per second by date",
+        "X-Label": "Date",
+        "Y-Label": "MBs per second",
+        "DataFrameCall": "self.cable_speed_time_dataframe",
+        "X-Axis": "date",
+        "Y-Axis": "upload",
+        "Chart": "Scatter",
+        "MultiIndex": false,
+        "Source": "speedtest.log"
+    }
+}
