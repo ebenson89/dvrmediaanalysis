@@ -1,4 +1,5 @@
 {
     "python.linting.enabled": true,
-    "qtForPython.designer.path": "C:\\Program Files (x86)\\Qt Designer\\designer.exe"
+    "qtForPython.designer.path": "C:\\Program Files (x86)\\Qt Designer\\designer.exe",
+    "python.analysis.typeCheckingMode": "basic"
 }
