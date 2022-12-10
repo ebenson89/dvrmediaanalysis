@@ -334,7 +334,7 @@ class MyWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             for dataframe_view_string in self.single_graph_labels_dict["DataFrameCall"]:
                 datafame_call_string = self.single_graph_labels_dict["DataFrameCall"][dataframe_view_string]
                 # Evaluate the dataframe view
-                new_dataframe = eval(datafame_call_string)
+                new_dataframe = eval(datafame_call_string)  # Yes this is an eval call. Do not touch it.
                 data_set_list.append(new_dataframe)
 
             # Debug
